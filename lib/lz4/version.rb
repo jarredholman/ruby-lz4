@@ -1,0 +1,7 @@
+module LZ4
+  LZ4_VERSION = '1.7.1'
+  LZ4_RELEASE = 129
+  GEM_REVISION = 1
+
+  VERSION = "#{LZ4_VERSION}.#{GEM_REVISION}"
+end
