@@ -42,11 +42,19 @@ static VALUE decompress(VALUE self, VALUE input)
   int uncompressed_size;
   int varint_size = varint_decode(&uncompressed_size, input_data);
 
+  if (uncompressed_size == 0) {
+    return rb_str_substr(input, varint_size, input_size - varint_size);
+  }
+
   VALUE output = rb_str_new(NULL, uncompressed_size);
   char* output_data = RSTRING_PTR(output);
 
   int decompress_size = LZ4_decompress_safe(input_data + varint_size, output_data,
                                             input_size - varint_size, uncompressed_size);
+
+  if (decompress_size < 0) {
+    return Qnil;
+  }
 
   return output;
 }
